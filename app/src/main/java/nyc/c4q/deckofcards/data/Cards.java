@@ -1,28 +1,17 @@
 package nyc.c4q.deckofcards.data;
 
 public class Cards {
-    private String image, value, suit, code;
+    private String suit;
+    private CardImagesModel images;
+    private String image;
+    private String code;
+    private String value;
 
-    public Cards(String image, String value, String suit, String code) {
-        this.image = image;
-        this.value = value;
+    public Cards(String suit, CardImagesModel images, String image, String code, String value) {
         this.suit = suit;
-        this.code = code;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
+        this.images = images;
         this.image = image;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
+        this.code = code;
         this.value = value;
     }
 
@@ -34,11 +23,35 @@ public class Cards {
         this.suit = suit;
     }
 
+    public CardImagesModel getImages() {
+        return images;
+    }
+
+    public void setImages(CardImagesModel images) {
+        this.images = images;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

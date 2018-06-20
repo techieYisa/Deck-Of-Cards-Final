@@ -10,7 +10,7 @@ public interface CardsApiService {
     String BASE_URL = "http://deckofcardsapi.com/api/deck/";
 
     @GET("new/shuffle/")
-    Call<CardsApiResponse> getShuffledCards();
+    Call<ShuffleModel> getShuffledCards();
 
     @GET("{deck_id}/draw/?count")
     Call<CardsApiResponse> getCards(@Path("deck_id") String cards, @Query("count") int numOfCards);

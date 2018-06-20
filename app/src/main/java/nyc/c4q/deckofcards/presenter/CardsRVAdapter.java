@@ -51,8 +51,8 @@ public class CardsRVAdapter extends RecyclerView.Adapter<CardsRVAdapter.CardsVie
             cardImageView = itemView.findViewById(R.id.card_image);
         }
         void bindImage(Cards cards) {
-            Picasso.get().load(String.valueOf(cards)).into(cardImageView);
-            cards.getValue();
+            String cardPng = cards.getImages().getPng();
+            Picasso.get().load(cardPng).into(cardImageView);
             cards.getSuit();
         }
     }

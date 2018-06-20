@@ -1,16 +1,19 @@
 package nyc.c4q.deckofcards;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import nyc.c4q.deckofcards.data.CardsApiResponse;
+import nyc.c4q.deckofcards.data.ShuffleModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +31,7 @@ import static nyc.c4q.deckofcards.data.CardsApiService.BASE_URL;
 
 public class CardActivity extends AppCompatActivity {
     Button shuffle, draw;
-    String shuffleId;
+    static String shuffleId;
     int cardsRemaining;
     EditText numInput;
     TextView remainderTV;
@@ -46,25 +49,28 @@ public class CardActivity extends AppCompatActivity {
         draw = (Button) findViewById(R.id.draw_cards_button);
         remainderTV = (TextView) findViewById(R.id.cards_remaining_tv);
         numInput = (EditText) findViewById(R.id.cards_et);
-        recyclerView =  (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            cardsApiService = retrofit.create(CardsApiService.class);
-                Call<CardsApiResponse> call = cardsApiService.getShuffledCards();
-                call.enqueue(new Callback<CardsApiResponse>() {
+                cardsApiService = retrofit.create(CardsApiService.class);
+                Call<ShuffleModel> call = cardsApiService.getShuffledCards();
+                call.enqueue(new Callback<ShuffleModel>() {
 
                     @Override
-                    public void onResponse(Call<CardsApiResponse> call, Response<CardsApiResponse> response) {
+                    public void onResponse(Call<ShuffleModel> call, Response<ShuffleModel> response) {
                         shuffleId = response.body().getDeck_id();
                         cardsRemaining = response.body().getRemaining();
                         remainderTV.setText("Cards Remaining " + cardsRemaining);
 
+                        Log.d("DECK ID", shuffleId);
+                        hideKeypad();
+
                     }
 
                     @Override
-                    public void onFailure(Call<CardsApiResponse> call, Throwable t) {
+                    public void onFailure(Call<ShuffleModel> call, Throwable t) {
                         t.printStackTrace();
 
                     }
@@ -76,15 +82,18 @@ public class CardActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                if (numInput.getText().toString().isEmpty()) {
+                    numInput.setError("You must draw atleast 1 card");
+                }
+
 
                 int i = Integer.parseInt(numInput.getText().toString());
 
-                if (i <= 0) {
+
+                if (i < 1) {
                     numInput.setError("You must draw atleast 1 card");
-                    numInput.requestFocus();
-                } else if (numInput.getText().toString().isEmpty()){
+                } else if (numInput.getText().toString().isEmpty()) {
                     numInput.setError("You must draw atleast 1 card");
-                    numInput.requestFocus();
                 } else {
                     cardsApiService = retrofit.create(CardsApiService.class);
                     Call<CardsApiResponse> call = cardsApiService.getCards(shuffleId, i);
@@ -96,6 +105,7 @@ public class CardActivity extends AppCompatActivity {
                             cardsRvAdapter.refreshCards(refreshedCards);
                             cardsRvAdapter.notifyDataSetChanged();
                             numInput.getText().clear();
+                            hideKeypad();
                         }
 
                         @Override
@@ -119,10 +129,19 @@ public class CardActivity extends AppCompatActivity {
         recyclerView.setAdapter(cardsRvAdapter);
 
     }
+
     public void setRetrofit() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+    public void hideKeypad() {
+        InputMethodManager inputManager =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(
+                this.getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
 }

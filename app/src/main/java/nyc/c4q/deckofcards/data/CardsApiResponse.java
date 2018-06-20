@@ -18,20 +18,6 @@ public class CardsApiResponse {
 
     }
 
-    public void setSuccess(boolean success) { this.success = success; }
-
-    public void setShuffled(boolean shuffled) { this.shuffled = shuffled; }
-
-    public void setDeck_id(String deck_id) { this.deck_id = deck_id; }
-
-    public void setRemaining(int remaining) { this.remaining = remaining; }
-
-    public void setCards(List<Cards> cards) { this.cards = cards; }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
     public boolean isShuffled() {
         return shuffled;
     }
