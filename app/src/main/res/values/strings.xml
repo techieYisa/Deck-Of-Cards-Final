@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">deckofcards</string>
+    <string name="cardValue">Cards Remaining:</string>
+    <string name="shuffle_new_deck">Shuffle New Deck</string>
+    <string name="how_many_cards">How Many Cards?</string>
+    <string name="draw_cards">Draw Cards</string>
+</resources>
