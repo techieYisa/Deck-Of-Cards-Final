@@ -36,8 +36,10 @@ public class CardsRVAdapter extends RecyclerView.Adapter<CardsRVAdapter.CardsVie
     }
 
     @Override
-    public int getItemCount() {
-        return cardList.size();
+    public int getItemCount() { return cardList.size(); }
+
+    public void refreshCards(List<Cards> cardMod){
+            cardList.addAll(cardMod);
     }
 
     public class CardsViewHolder extends RecyclerView.ViewHolder {
