@@ -1,3 +1,3 @@
 # Deck-Of-Cards-Final
 
-had trouble getting the cards to display
+problem in getting deck to load on oncreate. Didn't do animation...ran out of time on some of the smaller action items
